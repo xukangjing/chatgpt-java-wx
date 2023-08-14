@@ -2,6 +2,7 @@ package com.ttpfx.mapper;
 
 import com.ttpfx.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author ttpfx
@@ -14,4 +15,6 @@ public interface UserMapper {
     int insert(User user);
 
     User queryByName(String username);
+
+    int updateUserType(@Param("userType") Integer userType,@Param("username") String username);
 }

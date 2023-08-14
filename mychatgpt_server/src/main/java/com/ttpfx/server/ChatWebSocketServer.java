@@ -16,7 +16,12 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
+
+import static com.ttpfx.controller.UserController.loginUser;
+import static com.ttpfx.controller.UserController.loginUserKey;
 
 /**
  * @author ttpfx
@@ -30,7 +35,8 @@ public class ChatWebSocketServer {
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
      */
-    private static int onlineCount = 0;
+//    private static LongAdder onlineCount = 0;
+    private static AtomicInteger onlineCount = new AtomicInteger(0);
     /**
      * concurrent包的线程安全Map，用来存放每个客户端对应的MyWebSocket对象。
      */
@@ -82,7 +88,8 @@ public class ChatWebSocketServer {
         this.userLog = new UserLog();
         // 这里的用户id不可能为null，出现null，那么就是非法请求
         try {
-            this.userLog.setUserId(userService.queryByName(username).getId());
+//            this.userLog.setUserId(userService.queryByName(username).getId());
+            this.userLog.setUserId(loginUser.get(username).getId().intValue());
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -93,8 +100,8 @@ public class ChatWebSocketServer {
         }
         this.userLog.setUsername(username);
         chatWebSocketMap.put(username, this);
-        onlineCount++;
-        log.info("{}--open",username);
+        increase();
+        log.info("{}--open,onlineCount={}",username,getOnlineCount());
     }
 
     @OnClose
@@ -105,7 +112,7 @@ public class ChatWebSocketServer {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        System.out.println(username + "--" + message);
+        log.info("onMessage,username={},msg={}",username, message);
         // 记录日志
         this.userLog.setDateTime(LocalDateTime.now());
         this.userLog.setPreLogId(this.userLog.getLogId() == null ? -1 : this.userLog.getLogId());
@@ -139,5 +146,19 @@ public class ChatWebSocketServer {
 
     public static void sendInfo(String message, String toUserId) throws IOException {
         chatWebSocketMap.get(toUserId).sendMessage(message);
+    }
+
+
+
+    public static void increase() {
+        onlineCount.incrementAndGet();
+    }
+
+    public static void decrease() {
+        onlineCount.decrementAndGet();
+    }
+
+    public static int getOnlineCount() {
+        return onlineCount.get();
     }
 }

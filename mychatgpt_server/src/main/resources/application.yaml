@@ -1,5 +1,6 @@
 server:
-  port: 80
+  port: 8080
+#  port: 80
 
 spring:
   mvc:
@@ -7,10 +8,26 @@ spring:
       prefix: /
       suffix: .html
   datasource:
-    username: root
-    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/mychatgpt?useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=false
+#    username: aaaaddd
+#    password: dYSKCYbA5jCJCCw8
+##    测试机
+#    url: jdbc:mysql://127.0.0.1:3306/mychatgpt?useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=false
+
+    username: scale_wn
+    password: eZ_zbhH9YOwfh-K4BlJUaWqqHEJ_Ema-
+    url: jdbc:mysql://gaea.test.mysql02.b2c.srv:13406/scale?useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=false
+
+#    username: root
+#    password: Xkj910608@qq.com
+#    url: jdbc:mysql://127.0.0.1:3306/gpt_test_db?useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=false
+#    url: jdbc:mysql://192.168.0.107:3306/gpt_test_db?useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=false
+
+
+    redis:
+      host: localhost
+      port: 6379
+
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
@@ -22,7 +39,7 @@ mybatis:
 
 gpt:
   model:
-    key: 必填
+    key: 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
   # proxy:
   #   host: 127.0.0.1
   #   port: 7890

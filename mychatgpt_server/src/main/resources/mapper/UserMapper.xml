@@ -10,4 +10,13 @@
     <select id="queryByName" resultType="com.ttpfx.entity.User">
         select * from user where username = #{username}
     </select>
+
+
+    <update id="updateUserType">
+        UPDATE user a
+        SET a.user_type = #{userType}
+        WHERE
+            a.username = #{username}
+
+    </update>
 </mapper>

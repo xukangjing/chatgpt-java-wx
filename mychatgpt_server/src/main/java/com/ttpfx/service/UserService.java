@@ -10,4 +10,6 @@ public interface UserService{
 
 
     User queryByName(String username);
+    int addUser(User user);
+    int updateUserType(User user);
 }
