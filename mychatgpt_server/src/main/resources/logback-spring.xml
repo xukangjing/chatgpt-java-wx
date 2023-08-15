@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <property name="log.path" value="/tmp/logs/applogs/scale"/>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [scale_dev] [%level] [%thread] %X{trace_id} %logger{60}-%msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.path}/scale.log</File>
+        <encoder>
+            <Pattern>%n[%d{yyyy-MM-dd HH:mm:ss}] [scale_dev] [%level] [%thread] %X{trace_id} %logger{60}-%msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/scale-%d{yyyy-MM-dd_HH}.log</fileNamePattern>
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <logger name="org.springframework" level="info"/>
+    <logger name="io.lettuce.core" level="info"/>
+    <logger name="io.netty" level="info"/>
+    <logger name="org.hibernate.validator" level="info"/>
+    <logger name="scale.dao" level="debug"/>
+    <root level="debug">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+</configuration>
